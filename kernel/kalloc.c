@@ -34,9 +34,15 @@ void
 freerange(void *pa_start, void *pa_end)
 {
   char *p;
+  int num = 0;
   p = (char*)PGROUNDUP((uint64)pa_start);
-  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE)
+  for(; p + PGSIZE <= (char*)pa_end; p += PGSIZE) {
     kfree(p);
+    num++;
+    if (num % 50 == 0) {
+      printf("kinit num : %d\n", num);
+    }
+  }
 }
 
 // Free the page of physical memory pointed at by pa,
@@ -52,7 +58,8 @@ kfree(void *pa)
     panic("kfree");
 
   // Fill with junk to catch dangling refs.
-  memset(pa, 1, PGSIZE);
+  // XXX : fdgk : mock this for speedup
+  // memset(pa, 1, PGSIZE);
 
   r = (struct run*)pa;
 
