@@ -196,10 +196,20 @@ w_pmpaddr0(uint64 x)
   asm volatile("csrw pmpaddr0, %0" : : "r" (x));
 }
 
-// use riscv's sv39 page table scheme.
-#define SATP_SV39 (8L << 60)
+#ifdef VM_MODE_SV39
+#define SATP_MODE (8L << 60)
+#define VM_LEVELS 3
+#elif defined(VM_MODE_SV48)
+#define SATP_MODE (9L << 60)
+#define VM_LEVELS 4
+#elif defined(VM_MODE_SV57)
+#define SATP_MODE (10L << 60)
+#define VM_LEVELS 5
+#else
+#error "Unsupported VM_MODE"
+#endif
 
-#define MAKE_SATP(pagetable) (SATP_SV39 | (((uint64)pagetable) >> 12))
+#define MAKE_SATP(pagetable) (SATP_MODE | (((uint64)pagetable) >> 12))
 
 // supervisor address translation and protection;
 // holds the address of the page table.
@@ -358,6 +368,14 @@ typedef uint64 *pagetable_t; // 512 PTEs
 
 // one beyond the highest possible virtual address.
 // MAXVA is actually one bit less than the max allowed by
-// Sv39, to avoid having to sign-extend virtual addresses
-// that have the high bit set.
+// Sv39, Sv48 or Sv57. To avoid having to sign-extend virtual
+// addresses that have the high bit set.
+#ifdef VM_MODE_SV39
 #define MAXVA (1L << (9 + 9 + 9 + 12 - 1))
+#elif defined(VM_MODE_SV48)
+#define MAXVA (1L << (9 + 9 + 9 + 9 + 12 - 1))
+#elif defined(VM_MODE_SV57)
+#define MAXVA (1L << (9 + 9 + 9 + 9 + 9 + 12 - 1))
+#else
+#error "Unsupported VM_MODE"
+#endif
