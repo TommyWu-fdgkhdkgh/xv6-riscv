@@ -54,6 +54,14 @@ uartinit(void)
   // special mode to set baud rate.
   WriteReg(LCR, LCR_BAUD_LATCH);
 
+  // Divisor = (DLM << 8) + DLL
+  // Divisor = 1843200 / (16 * (Desired Baud Rate))
+  // standard PC COM port frequency is 1843200 Hz ( 1.8432 MHz )
+  //
+  // In this example : 
+  // 3 = (1843200) / (16 * (Desired Baud Rate))
+  // Desired Baud Rate = 1843200 / 48 = 38400 = 38.4 K
+  //
   // LSB for baud rate of 38.4K.
   WriteReg(0, 0x03);
 
