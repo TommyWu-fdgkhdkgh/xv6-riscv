@@ -149,9 +149,11 @@ UPROGS=\
 	$U/_memdump\
 	$U/_sleep\
 	$U/_sixfive\
+	$U/_find\
 
 UEXTRA=\
        $U/sixfive.txt\
+       $U/findtest.sh\
 
 fs.img: mkfs/mkfs README $(UPROGS) $(UEXTRA)
 	mkfs/mkfs fs.img README $(UPROGS) $(UEXTRA)
