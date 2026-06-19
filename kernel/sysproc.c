@@ -112,7 +112,10 @@ uint64
 sys_interpose(void)
 {
   int n;
+  struct proc *p = myproc();
+
   argint(0, &n);
-  myproc()->interpose_mask |= n;
+  p->interpose_mask |= n;
+  argstr(1, p->interpose_path, MAXPATH);
   return 0;
 }

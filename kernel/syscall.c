@@ -139,7 +139,8 @@ syscall(void)
   num = p->trapframe->a7;
   // num = *(int *) 1;
 
-  if ((1 << num) & p->interpose_mask) {
+  if (((1 << num) & p->interpose_mask) &&
+      num != SYS_open && num != SYS_exec) {
     // syscall interpose
     p->trapframe->a0 = -1;
   } else if(num > 0 && num < NELEM(syscalls) && syscalls[num]) {
