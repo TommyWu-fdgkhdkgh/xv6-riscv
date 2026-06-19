@@ -151,6 +151,8 @@ UPROGS=\
 	$U/_sixfive\
 	$U/_find\
 	$U/_sandbox\
+	$U/_secret\
+	$U/_attack\
 
 UEXTRA=\
        $U/sixfive.txt\
