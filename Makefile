@@ -150,10 +150,12 @@ UPROGS=\
 	$U/_sleep\
 	$U/_sixfive\
 	$U/_find\
+	$U/_sandbox\
 
 UEXTRA=\
        $U/sixfive.txt\
        $U/findtest.sh\
+       $U/exec.sh\
 
 fs.img: mkfs/mkfs README $(UPROGS) $(UEXTRA)
 	mkfs/mkfs fs.img README $(UPROGS) $(UEXTRA)

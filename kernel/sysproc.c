@@ -107,3 +107,12 @@ sys_uptime(void)
   release(&tickslock);
   return xticks;
 }
+
+uint64
+sys_interpose(void)
+{
+  int n;
+  argint(0, &n);
+  myproc()->interpose_mask |= n;
+  return 0;
+}
